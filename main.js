@@ -1,13 +1,12 @@
 #include "extendscript.csv.jsx";
 
 var parentFold = (new File($.fileName)).parent;
-
 var outputFold = parentFold + '/output/';
+
 var docRef = app.activeDocument;
 
 var frontLayerSet = docRef.layerSets.getByName('正面');
 var backLayerSet = docRef.layerSets.getByName('背面');
-var isFrontVisible = true;
 
 
 
@@ -23,14 +22,13 @@ for (var index in data) {
         changeTextLayerContent(docRef, key + 'T', catObj[key]);
     }
     var grade = catObj['等级'];
-    swithgradeLayer(grade);
+    switchGradeLayerSet(grade);
     // 正面
-    switchLayerSet(true);
+    showFrontLayerSet(true);
     saveJPG(outputFold + index + 'A.jpg', 12);
 
     // 背面
-    isFrontVisible = false;
-    switchLayerSet(false);
+    showFrontLayerSet(false);
     saveJPG(outputFold + index + 'B.jpg', 12);
 }
 
@@ -73,13 +71,13 @@ function changeTextLayerContentByName(layerSet, layerName, newTextString) {
 }
 
 
-function switchLayerSet(isFrontVisible) {
+function showFrontLayerSet(isFrontVisible) {
     frontLayerSet.visible = isFrontVisible;
     backLayerSet.visible = !isFrontVisible;
 }
 
 // Pay too much to code clean. Need change.
-function swithgradeLayer(grade) {
+function switchGradeLayerSet(grade) {
     var gradeList = ['A', 'B', 'C', 'S'];
     for (i = 0; i < gradeList.length; i++) {
         var gradeEach = gradeList[i];
